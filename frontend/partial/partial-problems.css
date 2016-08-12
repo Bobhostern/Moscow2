@@ -1,55 +1,97 @@
-#problemlist{
-    width:25%;
+#problemlist {
+    width: 15%;
     display: inline-block;
-    margin:0px;
+    margin: 0px;
     border-right: 1px solid black;
     cursor: default;
 }
-#problemdisplay{
+
+#problemdisplay {
     display: inline-block;
     /*border-bottom: 1px dashed black;*/
-    min-width: calc(75% - 4px);
-    max-width: calc(75% - 4px);
+    min-width: calc(85% - 4px);
+    max-width: calc(85% - 4px);
     vertical-align: top;
-    max-height:30%;
+}
 
-}
-#problems{
+#problems {
     margin-right: .5em;
-    height:100%;
-    /*margin-top: 1px;*/
+    max-width: 100%;
 }
-#problemtitle{
+
+#problemtitle {
     border-bottom: 1px dotted black;
 }
 
-.prettylist{
-    color:black !important;
+.prettylist {
+    color: black !important;
 }
-.sample{
-    border:1px solid;
+
+.sample {
+    border: 1px solid;
     width: calc(50% - 2px);
     background-color: beige;
-    display:inline-block;
+    display: inline-block;
     font-family: Courier New, Courier, monospace;
     max-height: 30em;
     overflow: auto;
 }
-.samplehead{
+
+.samplehead {
     display: inline-block;
     width: calc(50% - 2px);
     text-align: center;
 }
-#probleminfo{
+
+#probleminfo {
     border-bottom: 1px dashed black;
+    max-height: 70%;
+    overflow: auto;
 }
-#submissionlist{
-    width: calc( 50% - 2px );
+
+#submissioninfo {
+    display: block;
+    height: 30%;
+    overflow: auto;
+}
+
+#submissionlist {
+    width: calc( 50% - 2px);
     border-right: 1px solid black;
     display: inline-block;
+    overflow: auto;
+    height: calc(100% - 6px);
 }
-#submitnew{
-    width: calc( 50% );
+
+#submitnew {
+    width: 50%;
     margin-left: -2px;
     display: inline-block;
+    vertical-align: top;
+    overflow: auto;
 }
+
+.spacer {
+    width: 25%;
+    height: 1em;
+    display: inline-block;
+}
+
+#probdesc {
+    max-height: calc(100% - 8.5em);
+    overflow: auto;
+}
+
+#problemheader {
+    max-height: 8.5em;
+    border-bottom: 1px solid black;
+    overflow: auto;
+}
+
+
+/*thead, tbody {
+    display:block;
+}
+tbody{
+    overflow: auto;
+}*/
