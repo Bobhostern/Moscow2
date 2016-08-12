@@ -1,0 +1,55 @@
+#problemlist{
+    width:25%;
+    display: inline-block;
+    margin:0px;
+    border-right: 1px solid black;
+    cursor: default;
+}
+#problemdisplay{
+    display: inline-block;
+    /*border-bottom: 1px dashed black;*/
+    min-width: calc(75% - 4px);
+    max-width: calc(75% - 4px);
+    vertical-align: top;
+    max-height:30%;
+
+}
+#problems{
+    margin-right: .5em;
+    height:100%;
+    /*margin-top: 1px;*/
+}
+#problemtitle{
+    border-bottom: 1px dotted black;
+}
+
+.prettylist{
+    color:black !important;
+}
+.sample{
+    border:1px solid;
+    width: calc(50% - 2px);
+    background-color: beige;
+    display:inline-block;
+    font-family: Courier New, Courier, monospace;
+    max-height: 30em;
+    overflow: auto;
+}
+.samplehead{
+    display: inline-block;
+    width: calc(50% - 2px);
+    text-align: center;
+}
+#probleminfo{
+    border-bottom: 1px dashed black;
+}
+#submissionlist{
+    width: calc( 50% - 2px );
+    border-right: 1px solid black;
+    display: inline-block;
+}
+#submitnew{
+    width: calc( 50% );
+    margin-left: -2px;
+    display: inline-block;
+}

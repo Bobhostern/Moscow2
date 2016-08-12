@@ -1,0 +1,16 @@
+{
+  "name": "moscow",
+  "version": "1.0.0",
+  "description": "Computer science competition platform",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angcli": "0.0.7",
+    "angular": "^1.5.7",
+    "bower": "^1.7.9"
+  }
+}

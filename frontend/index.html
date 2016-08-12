@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Moscow</title>
+    <link rel="icon" href="images/favicon.ico">
+
+    <link rel="stylesheet" href="materialize/css/googlefont.css">
+    <link rel="stylesheet" href="materialize/css/materialize.css" media="screen,projection">
+    <link rel="stylesheet" href="index.css">
+
+
+    <script type="text/javascript" src="materialize/js/jquery-2.1.1.min.js"></script>
+    <script src="angular/angular.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.js"></script>
+    <script src="angular/angular-materialize.js"></script>
+    <script src="angular/angular-ui-router.js"></script>
+
+    <script src="app.js"></script>
+    <script src="debug/classes.js"></script>
+    <script src="debug/temporary_database.js"></script>
+    <script src="component/navigation.component.js"></script>
+
+</head>
+
+<body ng-app="moscow">
+
+
+    <navigation>
+
+    </navigation>
+
+    <div>
+
+        <div ui-view id='content'> </div>
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

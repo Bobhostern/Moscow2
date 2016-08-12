@@ -1,0 +1,12 @@
+<link rel='stylesheet' href='/partial/partial-messages.css'>
+<div id='messages'>
+    <div id='messagelist' class='collection' style='height:100%'>
+        <a class='collection-item prettylist' ng-repeat='msg in msginfo.messages' ng-click='$parent.currentMessage=msg'>
+        {{msg.title.value()}}
+    </a>
+    </div>
+    <div id='messagedisplay'>
+        <h3 id='messagetitle'>{{currentMessage.title.value()}}</h3>
+        <p ng-bind-html='currentMessage.body.value() | trust'></p>
+    </div>
+</div>

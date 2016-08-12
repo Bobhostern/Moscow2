@@ -1,0 +1,55 @@
+<nav>
+    <div class='nav-wrapper'>
+
+        <!--Left-Hand Navigation-->
+        <a href='' data-activates='slide-out' class='button-collapse show-on-large'><i class='material-icons'>menu</i></a>
+        <ul id='slide-out' class='side-nav'>
+            <li ng-repeat='page in navinfo.npage'><a href='#{{page.url.value()}}'>{{page.title.value()}}</a></li>
+        </ul>
+
+        <!--Logo-->
+        <a href='' class='brand-logo' style='margin-left:1em'>{{contestinfo.contestName.value()}}</a>
+
+        <!--User Info-->
+        <a class='dropdown-button btn right' href='' data-activates='userinfo' data-beloworigin='true' data-hover='true' dropdown>
+            <div class='chip'>
+                <img ng-src='{{userinfo.propic.value()}}' alt='Contact Person'> {{userinfo.alias.value()}}
+            </div>
+        </a>
+        <ul id='userinfo' class='dropdown-content'>
+            <li ng-repeat='drop in navinfo.udrop' class='{{drop.clazz.value()}}' ng-bind-html='drop.content.value() | trust'></li>
+        </ul>
+
+        <!--Contest Info-->
+        <a class='right dropdown-button btn' href='' data-activates='contestinfo' data-beloworigin='true' data-hover='true' dropdown>
+            <div ng-if='contestinfo.contestStatus.value()==-1'>Contest Not Started</div>
+            <div ng-if='contestinfo.contestStatus.value()==0'>Contest Finished</div>
+            <div ng-if='contestinfo.contestStatus.value()>=1'>Time Remaining: {{contestinfo.remaining()}}</div>
+        </a>
+        <ul id='contestinfo' class='dropdown-content'>
+            <li ng-repeat='drop in navinfo.cdrop' class='{{drop.clazz.value()}}' ng-bind-html='drop.content.value() | trust'></li>
+            <ul class='collapsible'>
+                <li ng-repeat='msg in msginfo.messages'>
+                    <div class='collapsible-header'>
+                        <u>{{msg.title.value()}}</u>
+                    </div>
+                    <div class='collapsible-body' ng-bind-html='msg.preview.value() | trust'></div>
+                </li>
+            </ul>
+        </ul>
+
+
+    </div>
+
+    <script>  
+            $(document).ready(function(){
+                $('.button-collapse').sideNav({
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    }
+                );
+                $('.collapsible').collapsible();
+            });
+    </script>
+
+</nav>

@@ -1,0 +1,26 @@
+#messagelist{
+    width:30%;
+    display: inline-block;
+    margin:0px;
+    border-right: 1px solid black;
+    cursor: default;
+}
+#messagedisplay{
+    display: inline-block;
+    border-bottom: 1px dashed black;
+    min-width: calc(70% - 4px);
+    max-width: calc(70% - 4px);
+    vertical-align: top;
+
+}
+#messages{
+    margin-right: .5em;
+    /*margin-top: 1px;*/
+}
+#messagetitle{
+    border-bottom: 1px dotted black;
+}
+
+.prettylist{
+    color:black !important;
+}

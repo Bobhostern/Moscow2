@@ -1,0 +1,26 @@
+.collapsible-header{
+    font-style: italic;
+    cursor: default !important;
+}
+.dropdown-info{
+    cursor: default !important;
+}
+
+
+
+.dropdown-link{
+    cursor: select !important;
+}
+#contestinfo *{
+    color: darkgreen;
+    text-align: center;
+}
+.collapsible-body{
+    cursor: default !important;
+}
+.dropdown-button{
+    cursor: default !important;
+}
+#content{
+    margin:.5em;
+}
