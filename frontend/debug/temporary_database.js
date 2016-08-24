@@ -7,21 +7,6 @@ moscow.run(function($rootScope){
     Resource.setScope(rootScope);
 });
 
-
-function xhr(proto, url, cb) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            cb(xhttp.responseText);
-        }
-    }
-    xhttp.open(proto, url, true);
-    xhttp.send();
-}
-
-
-
-
 var navigationInfo = new NavInfo();
 moscow.factory('navinfo', function () {
     return navigationInfo;
@@ -45,4 +30,9 @@ moscow.factory('msginfo', function () {
 var problemInfo = new ProblemInfo();
 moscow.factory('probleminfo', function () {
     return problemInfo;
+});
+
+var submissionInfo = new SubmissionInfo();
+moscow.factory('subinfo', function(){
+    return submissionInfo;
 });

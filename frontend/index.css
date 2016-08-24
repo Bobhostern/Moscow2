@@ -1,3 +1,13 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0; 
+}
+div {
+    height: 100%;
+    width: 100%;
+}
+
 .collapsible-header{
     font-style: italic;
     cursor: default !important;
@@ -23,4 +33,6 @@
 }
 #content{
     margin:.5em;
+    height: calc(100% - 64px - 1em) ; /*64px = height of nav, 1em is total margin of content*/
+    width: calc(100% - 1em);
 }
