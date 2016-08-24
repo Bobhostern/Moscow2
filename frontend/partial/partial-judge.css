@@ -1,0 +1,99 @@
+#submissionlist {
+    width: 30%;
+    display: inline-block;
+    margin: 0px;
+    border-right: 1px solid black;
+    cursor: default;
+}
+
+#submissiondisplay {
+    display: inline-block;
+    border-bottom: 1px dashed black;
+    min-width: calc(70% - 4px);
+    max-width: calc(70% - 4px);
+    vertical-align: top;
+    font-size: 3em;
+    overflow: auto;
+}
+
+#judgepage {
+    margin-right: .5em;
+    /*margin-top: 1px;*/
+}
+
+#infoarea {
+    border-bottom: 1px dotted black;
+    height: 1.5em;
+}
+
+.prettylist {
+    color: black !important;
+}
+
+.submission-unjudged {
+    color: blue;
+}
+
+.submission-correct {
+    color: green;
+}
+
+.submission-incorrect {
+    color: red;
+}
+
+.spacer {
+    width: 25%;
+    height: 1em;
+    display: inline-block;
+}
+
+#teamname {
+    float: right;
+    font-size: .5em;
+}
+
+.halftitle {
+    width: calc(50% - 8px);
+    display: inline-block;
+    height: auto;
+    font-size: 1.25ch;
+}
+
+.outputview {
+    width: calc(50% - 8px);
+    display: inline-block;
+    max-height: 10em;
+    /*font-size: 1em;*/
+    /*line-height: 1.15em;*/
+    vertical-align: top;
+    /*overflow: auto;   */
+    border: 1px black dashed;
+}
+
+.codesample {
+    margin: 0;
+    font-family: Courier New, Courier, monospace;
+    font-size: .4em;
+    line-height: 1.15em;
+    max-height: 20em;
+    overflow: auto;
+}
+
+#subbody {
+    height: auto;
+    border-bottom: 1px solid black;
+    padding-bottom: 1em;
+}
+
+#output {
+    height: auto;
+}
+
+#selectdiv {
+    margin-top: 1.2em;
+    height: auto;
+}
+#sjudge{
+    font-size: .5em;
+}

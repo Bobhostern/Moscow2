@@ -1,0 +1,45 @@
+<link href='/partial/partial-judge.css' rel='stylesheet'>
+<div id='judgepage'>
+    <div class='collection' id='submissionlist' style='height:100%'>
+        <a class='collection-item prettylist' ng-click='$parent.currentMessage=msg' ng-repeat='sub in subinfo.subs'>Submission {{sub.id}} 
+      <span class='submission-{{color(sub)}}'>{{color(sub)}}</span></a>
+    </div>
+    <div id='submissiondisplay'>
+        <div id='infoarea'>
+            <span id='submissiontitle'>Submission {{currentSubmission.id}}</span>
+            <span id='teamname'>Team {{currentSubmission.team.value()}}</span>
+        </div>
+        <div id='subbody'>
+            <div id='output'>
+                <div class='halftitle'>Correct Output</div>
+                <div class='halftitle'>Competitor Output</div>
+                <div class='outputview'>
+                    <pre class='codesample' ng-bind-html='pinfo.getProblem(currentSubmission.id).judgeout.value() | trust'></pre>
+                </div>
+                <div class='outputview'>
+                    <pre class='codesample' ng-bind-html='currentSubmission.output.value() | trust'></pre>
+                </div>
+            </div>
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header" style='font-size:.5em;'>Source Code</div>
+                    <div class="collapsible-body">
+                        <pre class='codesample' ng-bind-html='currentSubmission.sourceFile.value().src | trust'></pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <h4>Judge Submission</h4>
+        <div input-field id='selectdiv'>
+            <select class="" material-select watch>
+               <option ng-repeat='o in subinfo.submissionOptions' ng-selected='currentSubmission.status.value()==o.num'>{{o.name}}</option>
+             </select>
+            <label>Select Judgement</label>
+        </div>
+        <button class="btn waves-effect waves-light" id='sjudge'>Submit Judgement
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</div>
+<script>document.onload = function(){ $(document).ready(function() { $('select').material_select(); }); }</script>
+</link>

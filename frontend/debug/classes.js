@@ -1,3 +1,13 @@
+function xhr(proto, url, cb) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            cb(xhttp.responseText);
+        }
+    }
+    xhttp.open(proto, url, true);
+    xhttp.send();
+}
 class Resource {
     constructor(url, proto) {
         var self = this;
@@ -280,8 +290,8 @@ function gen(page, $stateProvider) {
 function navAdd(page) {
     remainingModules++;
     page.loadAll(function () {
-        for(var v in page){
-            if(page[v].value){
+        for (var v in page) {
+            if (page[v].value) {
                 page[v].value();
             }
         }
@@ -320,25 +330,51 @@ class NavInfo {
     }
 }
 
-class Submission{
-    constructor(id){
+class Submission {
+    constructor(id) {
+        this.id = id;
+
+        var pre = '/rest/submission/'+id+'/';
+        //0 = unjudged, 1 = correct, 2 = incorrect
+        this.status = get(pre+'status');
+        this.problem = get(pre+'problem');
+        this.output = get(pre+'output');
+        this.team = get(pre+'team');
+        this.sourceFile = get(pre+'sourceFile');
+
+    }
+}
+
+class SubmissionInfo {
+    constructor() {
+        this.subids = get('/rest/submission/sublist');
+        this.subs = [];
+        var self = this;
+        this.subids.value(function(val){
+            for(var key in val){
+                self.subs[key] = new Submission(key);
+            }
+        });
+        this.getSubmission = function (id) {
+            if (this.subs[id]) {
+                return this.subs[id];
+            }
+            return this.subs[id] = new Submission(id);
+        }
+        this.submissionOptions = [
+            {
+                name: 'Unjudged',
+                num: 0
+            },
+            {
+                name: 'Correct',
+                num: 1
+            },
+            {
+                name: 'Incorrect',
+                num: 2
+            }
+        ]
         
     }
-}
-
-class SubmissionInfo{
-    constructor(){
-
-    }
-}
-
-function xhr(proto, url, cb) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            cb(xhttp.responseText);
-        }
-    }
-    xhttp.open(proto, url, true);
-    xhttp.send();
 }
