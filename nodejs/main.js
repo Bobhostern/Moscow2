@@ -47,11 +47,23 @@ console.log(__dirname);
 var path = require('path');
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+
+const secret = "don't guess me!";
+
+
+
+
+
+
+
+
+
+
 var server = app.listen(80, function () {
 
     var host = server.address().address;
     var port = server.address().port;
 
-    console.log("Example app listening at http://%s:%s", host, port);
+    console.log("Moscow app listening at http://%s:%s", host, port);
 
 });
