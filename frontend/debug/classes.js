@@ -1,4 +1,6 @@
-const REST = '/testrest/';
+const NORMAL_REST = '/rest';
+const TEST_REST = '/testrest';
+const REST = TEST_REST;
 
 function xhr(proto, url, cb) {
     var xhttp = new XMLHttpRequest();

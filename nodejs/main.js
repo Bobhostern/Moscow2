@@ -30,6 +30,10 @@ function handleDisconnect() {
     });
 }
 // handleDisconnect();
+exports.conn = function(){
+    return connection;
+}
+
 
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -38,26 +42,23 @@ var express = require('express');
 var app = express();
 
 app.use('*', function (req, res, next) {
-    console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
+    // console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
     next();
 }
 );
+
 console.log(__dirname);
 
 var path = require('path');
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-
+var jwt = require('express-jwt');
 const secret = "don't guess me!";
+app.use(jwt({ secret: secret, credentialsRequired: false }));
 
+var router = require('./routes/router');
 
-
-
-
-
-
-
-
+router(app);
 
 var server = app.listen(80, function () {
 
