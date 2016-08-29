@@ -1,6 +1,6 @@
 const NORMAL_REST = '/rest';
 const TEST_REST = '/testrest';
-const REST = TEST_REST;
+const REST = NORMAL_REST;
 
 function xhr(proto, url, cb) {
     var xhttp = new XMLHttpRequest();
@@ -343,8 +343,9 @@ class Submission {
         this.status = get(pre+'status');
         this.problem = get(pre+'problem');
         this.output = get(pre+'output');
-        this.team = get(pre+'team');
-        this.sourceFile = get(pre+'sourceFile');
+        this.team = get(pre+'user_id');
+        this.source = get(pre+'source');
+        this.filename = get(pre+'filename');
 
     }
 }

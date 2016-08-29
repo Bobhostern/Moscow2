@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 
 var router = express.Router();
@@ -8,10 +6,10 @@ var router = express.Router();
 
 // });
 
-router.get(':id/:prop', function (req, res) {
+router.get('/:id/:prop', function (req, res) {
 
 });
-router.put(':id/:prop', function (req, res) {
+router.put('/:id/:prop', function (req, res) {
 
 });
 

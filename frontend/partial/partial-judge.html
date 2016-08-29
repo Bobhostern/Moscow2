@@ -22,9 +22,9 @@
             </div>
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header" style='font-size:.5em;'>Source Code</div>
+                    <div class="collapsible-header" style='font-size:.5em;'>Source Code: "{{currentSubmission.filename.value()}}"</div>
                     <div class="collapsible-body">
-                        <pre class='codesample' ng-bind-html='currentSubmission.sourceFile.value().src | trust'></pre>
+                        <pre class='codesample' ng-bind-html='currentSubmission.source.value() | trust'></pre>
                     </div>
                 </li>
             </ul>

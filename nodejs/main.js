@@ -16,9 +16,11 @@ function handleDisconnect() {
         }
 
         console.log('connected as id ' + connection.threadId);
+        dbmanager.init(connection);
     });
 
     connection.query("use moscow;", function (err, rows) { });          // the old one cannot be reused.
+    
 
     connection.on('error', function (err) {
         console.log('db error', err);
@@ -29,10 +31,10 @@ function handleDisconnect() {
         }
     });
 }
-// handleDisconnect();
-exports.conn = function(){
-    return connection;
-}
+handleDisconnect();
+
+var dbmanager = require('./dbmanager');
+
 
 
 var bodyParser = require('body-parser');
@@ -42,7 +44,11 @@ var express = require('express');
 var app = express();
 
 app.use('*', function (req, res, next) {
-    // console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
+    console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
+    req.connection = connection;
+    res.stringify = function(val){
+        res.end(JSON.stringify(val));
+    }
     next();
 }
 );

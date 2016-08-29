@@ -1,0 +1,57 @@
+User
+	user_id
+	alias
+	username
+	password
+
+Submission
+	sub_id
+	output
+	problem_id
+	source
+	status
+	user_id
+
+Problem
+	prob_id
+	descin
+	descout
+	description
+	inputname
+	judgein
+	judgeout
+	name
+	outputname
+	pointvalue
+	samplein
+	sampleout
+
+ContestDropdown
+	cdrop_id
+	clazz
+	content
+
+NavigationPage
+	npage_id
+	controller
+	controllerurl
+	name
+	templateurl
+	title
+	url
+
+UserDropdown
+	udrop_id
+	clazz
+	content
+
+Message
+	msg_id
+	body
+	preview
+	title
+
+Meta
+	name
+	status
+	version
