@@ -18,12 +18,14 @@ class Resource {
         this.url = url;
         this.proto = proto;
         this.isGet = false;
+        this.needsUpdate = true;
         this.value = function (cb) {
-            if (self.val == null && !self.isGet) {
+            if (self.needsUpdate && !self.isGet) {
                 self.isGet = true;
                 xhr(self.proto, self.url, function (res) {
                     var apply = function () {
                         self.val = JSON.parse(res);
+                        self.needsUpdate = false;
                         if (cb) {
                             cb(self.val);
                         }
@@ -338,14 +340,14 @@ class Submission {
     constructor(id) {
         this.id = id;
 
-        var pre = REST + '/submission/'+id+'/';
+        var pre = REST + '/submission/' + id + '/';
         //0 = unjudged, 1 = correct, 2 = incorrect
-        this.status = get(pre+'status');
-        this.problem = get(pre+'problem');
-        this.output = get(pre+'output');
-        this.team = get(pre+'user_id');
-        this.source = get(pre+'source');
-        this.filename = get(pre+'filename');
+        this.status = get(pre + 'status');
+        this.problem = get(pre + 'problem');
+        this.output = get(pre + 'output');
+        this.team = get(pre + 'user_id');
+        this.source = get(pre + 'source');
+        this.filename = get(pre + 'filename');
 
     }
 }
@@ -355,8 +357,8 @@ class SubmissionInfo {
         this.subids = get(REST + '/submission/sublist');
         this.subs = [];
         var self = this;
-        this.subids.value(function(val){
-            for(var key in val){
+        this.subids.value(function (val) {
+            for (var key in val) {
                 self.subs[key] = new Submission(key);
             }
         });
@@ -380,6 +382,6 @@ class SubmissionInfo {
                 num: 2
             }
         ]
-        
+
     }
 }
