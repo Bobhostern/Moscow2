@@ -7,6 +7,3 @@ moscow.filter("trust", ['$sce', function ($sce) {
         return $sce.trustAsHtml(htmlCode);
     }
 }]);
-
-
-

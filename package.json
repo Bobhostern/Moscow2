@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "eventsource": "^0.2.1",
     "express-jwt": "^3.4.0",
     "express-jwt-permissions": "^0.2.2",
     "mysql": "^2.11.1",

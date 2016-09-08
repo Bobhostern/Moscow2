@@ -19,7 +19,7 @@ exports.init = function (connection) {
         connection.query(query, function (err, rows) {
             if (err) {
                 console.log(err.stack);
-                res.end('error');
+                res.end('{success:false}');
                 return;
             }
             cb(rows);
@@ -31,7 +31,12 @@ exports.init = function (connection) {
         prop = prop.substring(1, prop.length - 1);
         id = connection.escape(id);
         connection.q('select `' + prop + '` from ' + table + ' where `' + idname + '` = ' + id, res, function (rows) {
-            res.stringify(rows[0][prop]);
+            try {
+                res.stringify(rows[0][prop]);
+            } catch (e) {
+                console.log(e.stack);
+                res.end('{success:false}');
+            }
         });
     }
 

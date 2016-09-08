@@ -2,7 +2,7 @@ const NORMAL_REST = '/rest';
 const TEST_REST = '/testrest';
 const REST = NORMAL_REST;
 
-function xhr(proto, url, cb) {
+function xhr(proto, url, cb, data) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
@@ -10,11 +10,26 @@ function xhr(proto, url, cb) {
         }
     }
     xhttp.open(proto, url, true);
-    xhttp.send();
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(data ? data : "");
 }
+
+var resources = [];
+
+function update(url) {
+    for (var i = 0; i < resources.length; i++) {
+        if (resources[i].url == url) {
+            // resources[i].needsUpdate = true;
+            resources[i].update();
+            return;
+        }
+    }
+}
+
 class Resource {
     constructor(url, proto) {
         var self = this;
+        resources.push(self);
         this.url = url;
         this.proto = proto;
         this.isGet = false;
@@ -40,11 +55,22 @@ class Resource {
             }
             return self.val;
         }
+        this.update = function(){
+            self.needsUpdate = true;
+        }
     }
 }
 Resource.setScope = function (scope) {
     Resource.scope = scope;
 }
+
+es = new EventSource('/sse');
+
+//todo: write event listener for more specific things so less load? :)
+es.addEventListener('update', function (e) {
+    update(e.data);
+})
+
 
 function get(url) {
     return new Resource(url, 'GET');
@@ -217,6 +243,8 @@ class UserInfo {
         this.username = get(REST + '/user/username');
         this.alias = get(REST + '/user/alias');
         this.propic = get(REST + '/user/propic');
+        //0 = competitor, 1 = judge, 2 = admin
+        this.type = get(REST + '/user/type');
     }
 }
 
@@ -343,7 +371,7 @@ class Submission {
         var pre = REST + '/submission/' + id + '/';
         //0 = unjudged, 1 = correct, 2 = incorrect
         this.status = get(pre + 'status');
-        this.problem = get(pre + 'problem');
+        this.problem = get(pre + 'problem_id');
         this.output = get(pre + 'output');
         this.team = get(pre + 'user_id');
         this.source = get(pre + 'source');
@@ -357,11 +385,20 @@ class SubmissionInfo {
         this.subids = get(REST + '/submission/sublist');
         this.subs = [];
         var self = this;
-        this.subids.value(function (val) {
-            for (var key in val) {
-                self.subs[key] = new Submission(key);
+        
+        var populate = function (val) {
+            for (var i = 0; i < val.length; i++) {
+                var id = val[i];
+                self.subs[i] = new Submission(id);
             }
-        });
+        };
+
+        this.subids.update = function(){
+            self.subids.needsUpdate = true;
+            self.subids.value(populate);
+        }
+
+        this.subids.value(populate);
         this.getSubmission = function (id) {
             if (this.subs[id]) {
                 return this.subs[id];
@@ -369,6 +406,10 @@ class SubmissionInfo {
             return this.subs[id] = new Submission(id);
         }
         this.submissionOptions = [
+            {
+                name: 'Not Compiled',
+                num: -1
+            },
             {
                 name: 'Unjudged',
                 num: 0

@@ -20,7 +20,7 @@ function handleDisconnect() {
     });
 
     connection.query("use moscow;", function (err, rows) { });          // the old one cannot be reused.
-    
+
 
     connection.on('error', function (err) {
         console.log('db error', err);
@@ -40,14 +40,28 @@ var dbmanager = require('./dbmanager');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+
 var express = require('express');
 var app = express();
 
+app.use(urlencodedParser);
+
+var connections = [];
+
 app.use('*', function (req, res, next) {
-    console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
+    // console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
     req.connection = connection;
-    res.stringify = function(val){
+    res.stringify = function (val) {
         res.end(JSON.stringify(val));
+    }
+    req.sse = function(url){
+        console.log('sse '+url);
+        for(var i = 0; i < connections.length; i++){
+            connections[i].send({
+                event: 'update',
+                data: url
+            });
+        }
     }
     next();
 }
@@ -72,5 +86,26 @@ var server = app.listen(80, function () {
     var port = server.address().port;
 
     console.log("Moscow app listening at http://%s:%s", host, port);
+
+});
+
+var SSE = require('sse');
+
+var sse = new SSE(server);
+
+sse.on('connection', function (conn) {
+
+    console.log("user joined realtime updates");
+
+    connections.push(conn)
+
+    conn.on('close', function () {
+        console.log('user disconnected');
+        for (var i = 0; i < connections.length; i++) {
+            if (connections[i] == conn) {
+                connections.splice(i, 1);
+            }
+        }
+    });
 
 });
