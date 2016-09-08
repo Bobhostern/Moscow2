@@ -6,7 +6,9 @@ This project aims to provide an easy web-based platform to run programming compe
 
 Revamped programming competition made with NodeJS, Angular, Materializecss, and Java.
 
-How to run:
+There is currently no release version.
+
+How to run(There is currently no release version):
 
 Install Node JS
 
