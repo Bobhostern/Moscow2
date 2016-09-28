@@ -1,25 +1,49 @@
-function xhr(proto, url, cb) {
+const NORMAL_REST = '/rest';
+const TEST_REST = '/testrest';
+const REST = NORMAL_REST;
+
+
+function xhr(proto, url, cb, data) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             cb(xhttp.responseText);
         }
     }
+
     xhttp.open(proto, url, true);
-    xhttp.send();
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(data ? data : '');
+
 }
+
+var resources = [];
+
+function update(url) {
+    for (var i = 0; i < resources.length; i++) {
+        if (resources[i].url == url) {
+            // resources[i].needsUpdate = true;
+            resources[i].update();
+            return;
+        }
+    }
+}
+
 class Resource {
     constructor(url, proto) {
         var self = this;
+        resources.push(self);
         this.url = url;
         this.proto = proto;
         this.isGet = false;
+        this.needsUpdate = true;
         this.value = function (cb) {
-            if (self.val == null && !self.isGet) {
+            if (self.needsUpdate && !self.isGet) {
                 self.isGet = true;
                 xhr(self.proto, self.url, function (res) {
                     var apply = function () {
                         self.val = JSON.parse(res);
+                        self.needsUpdate = false;
                         if (cb) {
                             cb(self.val);
                         }
@@ -34,11 +58,26 @@ class Resource {
             }
             return self.val;
         }
+        this.update = function () {
+            self.needsUpdate = true;
+        }
     }
 }
 Resource.setScope = function (scope) {
     Resource.scope = scope;
 }
+
+es = new EventSource('/sse');
+
+//todo: write event listener for more specific things so less load? :)
+es.addEventListener('update', function (e) {
+    update(e.data);
+});
+
+es.addEventListener('unauthorized', function (e) {
+    window.location.href = e.data;
+})
+
 
 function get(url) {
     return new Resource(url, 'GET');
@@ -51,7 +90,7 @@ class Problem {
 
     constructor(id) {
         this.id = id;
-        var pre = '/rest/problems/' + id + '/';
+        var pre = REST + '/problems/' + id + '/';
         this.pointvalue = get(pre + 'pointvalue');
         this.inputname = get(pre + 'inputname');
         this.outputname = get(pre + 'outputname');
@@ -70,7 +109,7 @@ class Problem {
 class ProblemInfo {
     constructor() {
         var self = this;
-        this.problemids = get('/rest/problems/problemlist');
+        this.problemids = get(REST + '/problems/problemlist');
         this.problems = [];
         this.problemids.value(function (val) {
             for (var key in val) {
@@ -89,7 +128,7 @@ class ProblemInfo {
 class Message {
     constructor(id) {
         this.id = id;
-        var pre = '/rest/messages/' + id + '/';
+        var pre = REST + '/messages/' + id + '/';
         this.title = get(pre + 'title');
         this.preview = get(pre + 'preview');
         this.body = get(pre + 'body');
@@ -98,7 +137,7 @@ class Message {
 
 class MessageInfo {
     constructor() {
-        this.messageids = get('/rest/messages/messagelist');
+        this.messageids = get(REST + '/messages/messagelist');
         this.messages = [];
         var self = this;
         this.messageids.value(function (val) {
@@ -195,11 +234,11 @@ class ContestInfo {
         var self = this;
 
         this.countdown = new Countdown(self);
-        this.contestStatus = get('/rest/contest/status');
+        this.contestStatus = get(REST + '/contest/status');
         this.contestStatus.value(function () {
             self.countdown.tryCount();
         });
-        this.contestName = get('/rest/contest/name');
+        this.contestName = get(REST + '/contest/name');
         this.remaining = function () {
             return fancytime(self.contestStatus.value());
         }
@@ -208,16 +247,20 @@ class ContestInfo {
 
 class UserInfo {
     constructor() {
-        this.username = get('/rest/user/username');
-        this.alias = get('/rest/user/alias');
-        this.propic = get('/rest/user/propic');
+        this.username = get(REST + '/user/username');
+        this.alias = get(REST + '/user/alias');
+        this.propic = get(REST + '/user/propic');
+        //0 = competitor, 1 = judge, 2 = admin, -1 = not logged in
+        this.type = get(REST + '/user/type');
+        this.token = getCookie('token') ? getCookie('token') : "I have no token :(";
+        this.isLoggedIn = get(REST + '/user/isLoggedIn');
     }
 }
 
 class ContestDropdown {
     constructor(id) {
         this.id = id;
-        var pre = '/rest/navigation/contestdropdowns/' + id + '/';
+        var pre = REST + '/navigation/contestdropdowns/' + id + '/';
         this.clazz = get(pre + 'clazz');
         this.content = get(pre + 'content');
     }
@@ -226,7 +269,7 @@ class ContestDropdown {
 class UserDropdown {
     constructor(id) {
         this.id = id;
-        var pre = '/rest/navigation/userdropdowns/' + id + '/';
+        var pre = REST + '/navigation/userdropdowns/' + id + '/';
         this.clazz = get(pre + 'clazz');
         this.content = get(pre + 'content');
     }
@@ -236,7 +279,7 @@ class NavPage {
     constructor(id) {
         var self = this;
         this.id = id;
-        var pre = '/rest/navigation/navigationpages/' + id + '/';
+        var pre = REST + '/navigation/navigationpages/' + id + '/';
         this.name = get(pre + 'name');
         this.title = get(pre + 'title');
         this.url = get(pre + 'url');
@@ -252,6 +295,7 @@ class NavPage {
                 }
             }
             num = li.length;
+            console.log(li[0]);
             while (li.length > 0) {
                 li.pop().value(function () {
                     num--;
@@ -304,9 +348,9 @@ function navAdd(page) {
 
 class NavInfo {
     constructor() {
-        this.cdropids = get('/rest/navigation/cdroplist');
-        this.udropids = get('/rest/navigation/udroplist');
-        this.npageids = get('/rest/navigation/npagelist');
+        this.cdropids = get(REST + '/navigation/cdroplist');
+        this.udropids = get(REST + '/navigation/udroplist');
+        this.npageids = get(REST + '/navigation/npagelist');
         this.cdrop = [];
         this.udrop = [];
         this.npage = [];
@@ -334,27 +378,37 @@ class Submission {
     constructor(id) {
         this.id = id;
 
-        var pre = '/rest/submission/'+id+'/';
+        var pre = REST + '/submission/' + id + '/';
         //0 = unjudged, 1 = correct, 2 = incorrect
-        this.status = get(pre+'status');
-        this.problem = get(pre+'problem');
-        this.output = get(pre+'output');
-        this.team = get(pre+'team');
-        this.sourceFile = get(pre+'sourceFile');
+        this.status = get(pre + 'status');
+        this.problem = get(pre + 'problem_id');
+        this.output = get(pre + 'output');
+        this.team = get(pre + 'user_id');
+        this.source = get(pre + 'source');
+        this.filename = get(pre + 'filename');
 
     }
 }
 
 class SubmissionInfo {
     constructor() {
-        this.subids = get('/rest/submission/sublist');
+        this.subids = get(REST + '/submission/sublist');
         this.subs = [];
         var self = this;
-        this.subids.value(function(val){
-            for(var key in val){
-                self.subs[key] = new Submission(key);
+
+        var populate = function (val) {
+            for (var i = 0; i < val.length; i++) {
+                var id = val[i];
+                self.subs[i] = new Submission(id);
             }
-        });
+        };
+
+        this.subids.update = function () {
+            self.subids.needsUpdate = true;
+            self.subids.value(populate);
+        }
+
+        this.subids.value(populate);
         this.getSubmission = function (id) {
             if (this.subs[id]) {
                 return this.subs[id];
@@ -362,6 +416,10 @@ class SubmissionInfo {
             return this.subs[id] = new Submission(id);
         }
         this.submissionOptions = [
+            {
+                name: 'Not Compiled',
+                num: -1
+            },
             {
                 name: 'Unjudged',
                 num: 0
@@ -375,6 +433,18 @@ class SubmissionInfo {
                 num: 2
             }
         ]
-        
+
     }
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
 }

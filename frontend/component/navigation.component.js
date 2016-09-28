@@ -5,9 +5,6 @@ var moscow = angular.module('moscow');
 var CONTROLLER_POOL = {}
 
 
-
-
-
 var state;
 var initurl;
 moscow.

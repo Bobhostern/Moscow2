@@ -1,5 +1,4 @@
 {
 	"name": "Schniggles.java",
 	"src": "public class Schniggles{\n\tpublic static void main(String[] args){\n\t\tScanner yo = new Scanner(System.in);\n\t\twhile(yo.hasNextInt()){\n\t\t\tSystem.out.println(yo.nextInt()+yo.nextInt());\n\t\t}\n\t}\n}"
-
 }

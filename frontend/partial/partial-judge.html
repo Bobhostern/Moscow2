@@ -1,8 +1,8 @@
 <link href='/partial/partial-judge.css' rel='stylesheet'>
 <div id='judgepage'>
-    <div class='collection' id='submissionlist' style='height:100%'>
-        <a class='collection-item prettylist' ng-click='$parent.currentMessage=msg' ng-repeat='sub in subinfo.subs'>Submission {{sub.id}} 
-      <span class='submission-{{color(sub)}}'>{{color(sub)}}</span></a>
+    <div class='collection' id='submissionlist' style='height:100%;overflow:auto;'>
+        <a class='collection-item prettylist' ng-click='$parent.currentSubmission=sub' ng-repeat='sub in subinfo.subs'>Submission {{sub.id}} 
+      <span class='submission-{{color(sub)}}' ng-bind='color(sub).split("_").join(" ")'></span></a>
     </div>
     <div id='submissiondisplay'>
         <div id='infoarea'>
@@ -10,11 +10,11 @@
             <span id='teamname'>Team {{currentSubmission.team.value()}}</span>
         </div>
         <div id='subbody'>
-            <div id='output'>
+            <div id='output' ng-if='hasJudge()'>
                 <div class='halftitle'>Correct Output</div>
                 <div class='halftitle'>Competitor Output</div>
                 <div class='outputview'>
-                    <pre class='codesample' ng-bind-html='pinfo.getProblem(currentSubmission.id).judgeout.value() | trust'></pre>
+                    <pre class='codesample' ng-bind-html='pinfo.getProblem(currentSubmission.problem.value()).judgeout.value() | trust'></pre>
                 </div>
                 <div class='outputview'>
                     <pre class='codesample' ng-bind-html='currentSubmission.output.value() | trust'></pre>
@@ -22,23 +22,26 @@
             </div>
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header" style='font-size:.5em;'>Source Code</div>
+                    <div class="collapsible-header noselect" style='font-size:.5em;'>Source Code: "{{currentSubmission.filename.value()}}"</div>
                     <div class="collapsible-body">
-                        <pre class='codesample' ng-bind-html='currentSubmission.sourceFile.value().src | trust'></pre>
+                        <pre class='codesample' ng-bind-html='currentSubmission.source.value() | trust'></pre>
                     </div>
                 </li>
             </ul>
         </div>
-        <h4>Judge Submission</h4>
-        <div input-field id='selectdiv'>
-            <select class="" material-select watch>
-               <option ng-repeat='o in subinfo.submissionOptions' ng-selected='currentSubmission.status.value()==o.num'>{{o.name}}</option>
-             </select>
-            <label>Select Judgement</label>
-        </div>
-        <button class="btn waves-effect waves-light" id='sjudge'>Submit Judgement
-            <i class="material-icons right">send</i>
-        </button>
+        <span ng-if='hasJudge()'>
+            <h4>Judge Submission</h4>
+            <div input-field id='selectdiv'>
+                <select material-select watch id='judgeselect'>
+                <option ng-repeat='o in subinfo.submissionOptions' ng-selected='currentSubmission.status.value()==o.num' data-judgement='{{o.num}}'>{{o.name}}</option>
+                </select>
+                <label>Select Judgement</label>
+            </div>
+            <button class="btn waves-effect waves-light" id='sjudge' ng-click='submitJudgement(currentSubmission.id)'>
+                Submit Judgement
+                <i class="material-icons right">send</i>
+            </button>
+        </span>
     </div>
 </div>
 <script>document.onload = function(){ $(document).ready(function() { $('select').material_select(); }); }</script>
