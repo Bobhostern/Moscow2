@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="materialize/css/googlefont.css">
+    <link rel="stylesheet" href="materialize/css/materialize.css" media="screen,projection">
+    <link rel="stylesheet" href="login.css">
+
+    <script>
+        function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        window.onload = function(){
+            console.log('wot');
+            if(getParameterByName('failure')){
+                document.getElementById('failure').innerText='Login rejected. Try again';
+                // console.log('YOU FAIL!');
+
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id='content'>
+
+        <h1>Log in to Programming Contest</h1>
+
+        <form action='/rest/login' method='POST'>
+            Username:<br>
+            <input type='text' name='username'><br>
+            Password:<br>
+            <input type='password' name='password'><br>
+
+            <input type='submit' value='Login'></input>
+        </form>
+        <div id='failure' style='color: red;'>
+        </div>
+
+    </div>
+</body>
+
+</html>

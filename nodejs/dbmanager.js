@@ -1,5 +1,13 @@
 const CURRENT_VERSION = '0.0.1';
 
+// var jwt = require('jsonwebtoken');
+// const secret = "don't guess me!";
+
+// var encoded = jwt.sign({foo: 'bar', password: 'dontlookatme!'}, secret)
+// console.log(jwt.decode(encoded,"wat"))
+// console.log(jwt.decode(encoded));
+
+
 exports.init = function (connection) {
 
     connection.query('use moscow', function (err) {

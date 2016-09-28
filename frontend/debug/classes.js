@@ -2,6 +2,7 @@ const NORMAL_REST = '/rest';
 const TEST_REST = '/testrest';
 const REST = NORMAL_REST;
 
+
 function xhr(proto, url, cb, data) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -9,9 +10,11 @@ function xhr(proto, url, cb, data) {
             cb(xhttp.responseText);
         }
     }
+
     xhttp.open(proto, url, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(data ? data : "");
+    xhttp.send(data ? data : '');
+
 }
 
 var resources = [];
@@ -55,7 +58,7 @@ class Resource {
             }
             return self.val;
         }
-        this.update = function(){
+        this.update = function () {
             self.needsUpdate = true;
         }
     }
@@ -69,6 +72,10 @@ es = new EventSource('/sse');
 //todo: write event listener for more specific things so less load? :)
 es.addEventListener('update', function (e) {
     update(e.data);
+});
+
+es.addEventListener('unauthorized', function (e) {
+    window.location.href = e.data;
 })
 
 
@@ -243,8 +250,10 @@ class UserInfo {
         this.username = get(REST + '/user/username');
         this.alias = get(REST + '/user/alias');
         this.propic = get(REST + '/user/propic');
-        //0 = competitor, 1 = judge, 2 = admin
+        //0 = competitor, 1 = judge, 2 = admin, -1 = not logged in
         this.type = get(REST + '/user/type');
+        this.token = getCookie('token') ? getCookie('token') : "I have no token :(";
+        this.isLoggedIn = get(REST + '/user/isLoggedIn');
     }
 }
 
@@ -286,6 +295,7 @@ class NavPage {
                 }
             }
             num = li.length;
+            console.log(li[0]);
             while (li.length > 0) {
                 li.pop().value(function () {
                     num--;
@@ -385,7 +395,7 @@ class SubmissionInfo {
         this.subids = get(REST + '/submission/sublist');
         this.subs = [];
         var self = this;
-        
+
         var populate = function (val) {
             for (var i = 0; i < val.length; i++) {
                 var id = val[i];
@@ -393,7 +403,7 @@ class SubmissionInfo {
             }
         };
 
-        this.subids.update = function(){
+        this.subids.update = function () {
             self.subids.needsUpdate = true;
             self.subids.value(populate);
         }
@@ -425,4 +435,16 @@ class SubmissionInfo {
         ]
 
     }
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
 }
