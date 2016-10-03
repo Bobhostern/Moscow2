@@ -295,7 +295,7 @@ class NavPage {
                 }
             }
             num = li.length;
-            console.log(li[0]);
+            // console.log(li[0]);
             while (li.length > 0) {
                 li.pop().value(function () {
                     num--;
@@ -397,10 +397,18 @@ class SubmissionInfo {
         var self = this;
 
         var populate = function (val) {
+            console.log('val');
+            console.log(val);
+            console.log(val.length);
             for (var i = 0; i < val.length; i++) {
+                console.log(i + ' ' + val[i]);
                 var id = val[i];
                 self.subs[i] = new Submission(id);
             }
+            console.log('subs');
+            console.log(self.subs);
+            console.log('subids');
+            console.log(self.subids);
         };
 
         this.subids.update = function () {
@@ -410,10 +418,12 @@ class SubmissionInfo {
 
         this.subids.value(populate);
         this.getSubmission = function (id) {
-            if (this.subs[id]) {
-                return this.subs[id];
+            for(var key in self.subs){
+                if (self.subs[key].id == id){
+                    return self.subs[key];
+                }
             }
-            return this.subs[id] = new Submission(id);
+            return self.subs[self.subs.length] = new Submission(id);
         }
         this.submissionOptions = [
             {

@@ -5,3 +5,4 @@ node_modules/**
 mariadb-5.5.29-winx64/**
 /Worker/nbproject/private/
 /Worker/.nb-gradle/
+/Worker/build/

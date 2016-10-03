@@ -1,0 +1,8 @@
+Hello
+Many Words
+$up3r f@ncy
+' or 1=1; -- SQL INJECTION ROCKS!
+Seven Lakes is the best school!
+Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.util.Scanner.nextLine(Scanner.java:1540)
+	at Echo.main(Echo.java:13)

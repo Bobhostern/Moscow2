@@ -4,6 +4,7 @@
   "description": "Modular Open-Source Competition for Overburdened Workers",
   "main": "main.js",
   "dependencies": {
+    "amqplib": "^0.4.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",

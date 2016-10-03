@@ -15,11 +15,14 @@ module.exports = function (app) {
     var submission = require('./submission');
     var user = require('./user');
 
+    var worker = require('./worker');
+
     app.use(REST + 'contest', contest);
     app.use(REST + 'messages', messages);
     app.use(REST + 'navigation', navigation);
     app.use(REST + 'problems', problems);
     app.use(REST + 'submission', submission);
     app.use(REST + 'user', user);
+    app.use(REST + 'worker',worker);
 
 }

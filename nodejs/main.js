@@ -60,6 +60,18 @@ app.use(cookieParser());
 
 var connections = [];
 
+var RABBIT_ADDRESS = 'amqp://localhost';
+
+var amqp = require('amqplib/callback_api');
+var WORK_QUEUE = 'WORK_QUEUE';
+var channel;
+amqp.connect(RABBIT_ADDRESS, function(err,conn){
+    conn.createChannel(function(err,ch){
+        channel = ch;
+        ch.assertQueue(WORK_QUEUE, {durable:true});
+    });
+});
+
 app.use('*', function (req, res, next) {
     // console.log(req.protocol + " " + req.method + " request from " + req.ip + " for " + req.baseUrl);
     req.connection = connection;
@@ -75,9 +87,12 @@ app.use('*', function (req, res, next) {
             });
         }
     }
+    req.channel = channel;
+    req.WORK_QUEUE = WORK_QUEUE;
     next();
 }
 );
+
 
 console.log(__dirname);
 
@@ -100,7 +115,7 @@ app.use(jwt({
         }
         return token;
   
-    }}).unless({ path: ['/rest/login','/rest/user/isLoggedIn','/favicon.ico'] }));
+    }}).unless({ path: ['/rest/login','/rest/user/isLoggedIn','/favicon.ico','/rest/worker/submitJudgement'] }));
 
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
