@@ -60,12 +60,16 @@ app.use(cookieParser());
 
 var connections = [];
 
-var RABBIT_ADDRESS = 'amqp://localhost';
+var RABBIT_ADDRESS = 'amqp://kirbyquerby:kirby123@localhost';
 
 var amqp = require('amqplib/callback_api');
 var WORK_QUEUE = 'WORK_QUEUE';
 var channel;
 amqp.connect(RABBIT_ADDRESS, function(err,conn){
+    if(err){
+        console.log(err);
+        return;
+    }
     conn.createChannel(function(err,ch){
         channel = ch;
         ch.assertQueue(WORK_QUEUE, {durable:true});

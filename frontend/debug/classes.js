@@ -60,6 +60,7 @@ class Resource {
         }
         this.update = function () {
             self.needsUpdate = true;
+            Resource.scope.$apply();
         }
     }
 }
@@ -247,6 +248,7 @@ class ContestInfo {
 
 class UserInfo {
     constructor() {
+        var self = this;
         this.username = get(REST + '/user/username');
         this.alias = get(REST + '/user/alias');
         this.propic = get(REST + '/user/propic');
@@ -254,8 +256,13 @@ class UserInfo {
         this.type = get(REST + '/user/type');
         this.token = getCookie('token') ? getCookie('token') : "I have no token :(";
         this.isLoggedIn = get(REST + '/user/isLoggedIn');
+        this.members = get(REST + '/user/members');
+        this.hasMembers = get(REST + '/user/hasMembers');
+
+        this.competitors = get(REST + '/competitors/list');
     }
 }
+
 
 class ContestDropdown {
     constructor(id) {
@@ -397,18 +404,10 @@ class SubmissionInfo {
         var self = this;
 
         var populate = function (val) {
-            console.log('val');
-            console.log(val);
-            console.log(val.length);
             for (var i = 0; i < val.length; i++) {
-                console.log(i + ' ' + val[i]);
                 var id = val[i];
                 self.subs[i] = new Submission(id);
             }
-            console.log('subs');
-            console.log(self.subs);
-            console.log('subids');
-            console.log(self.subids);
         };
 
         this.subids.update = function () {
@@ -418,8 +417,8 @@ class SubmissionInfo {
 
         this.subids.value(populate);
         this.getSubmission = function (id) {
-            for(var key in self.subs){
-                if (self.subs[key].id == id){
+            for (var key in self.subs) {
+                if (self.subs[key].id == id) {
                     return self.subs[key];
                 }
             }

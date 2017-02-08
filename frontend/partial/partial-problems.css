@@ -95,3 +95,18 @@
 tbody{
     overflow: auto;
 }*/
+
+.submission-unjudged {
+    color: blue;
+}
+
+.submission-correct {
+    color: green;
+}
+
+.submission-incorrect {
+    color: red;
+}
+.submission-not_compiled{
+    color: gray;
+}

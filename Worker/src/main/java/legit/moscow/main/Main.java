@@ -39,6 +39,8 @@ public class Main {
 //        ServerConnection serverConnection = new ServerConnection(server);
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(rabbit);
+        factory.setUsername("kirbyquerby");
+        factory.setPassword("kirby123");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
@@ -48,13 +50,13 @@ public class Main {
         channel.basicQos(1);
 
         WorkConsumer consumer = new WorkConsumer(channel);
-        JavaCompiler javaCompiler = new JavaCompiler(jdkBin, 60);
+        JavaCompiler javaCompiler = new JavaCompiler(jdkBin, 2);
         consumer.executors.put("legit_moscow_javacompiler", javaCompiler);
 
         ServerConnection serverConnection = new ServerConnection(server);
 
         javaCompiler.addListener((CompilationEvent event) -> {
-//            System.out.println("Compilation listened to");
+            System.out.println("Compilation listened to");
             if (event.failure) {
                 try {
                     event.task.command.channel.basicNack(
@@ -71,9 +73,9 @@ public class Main {
                     form.put("id", String.valueOf(event.task.id));
                     form.put("buildOutput", event.buildOutput);
                     form.put("runOutput", event.runOutput);
-//                    System.out.println("Sending results");
+                    System.out.println("Sending results");
                     String res = serverConnection.post("rest/worker/submitJudgement", form);
-//                    System.out.println("response: " + res);
+                    System.out.println("response: " + res);
                     boolean success = gson.fromJson(res, Success.class).success;
                     if (success) {
                         event.task.command.channel.basicAck(

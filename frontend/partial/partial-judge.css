@@ -66,12 +66,13 @@
 .outputview {
     width: calc(50% - 8px);
     display: inline-block;
-    max-height: 10em;
+    /*max-height: 10em;*/
     /*font-size: 1em;*/
     /*line-height: 1.15em;*/
     vertical-align: top;
     /*overflow: auto;   */
-    border: 1px black dashed;
+    overflow-x: auto;
+    /*border: 1px black dashed;*/
 }
 
 .codesample {
@@ -79,8 +80,9 @@
     font-family: Courier New, Courier, monospace;
     font-size: .4em;
     line-height: 1.15em;
-    max-height: 20em;
-    overflow: auto;
+    overflow: visible;
+    /*max-height: 20em;*/
+    /*overflow-x: auto;*/
 }
 
 #subbody {
@@ -108,4 +110,20 @@
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
+}
+#outputcontainer{
+    max-height: 10em;
+    overflow: auto;
+}
+.outputline{
+    height: auto;
+    font-size: inherit;
+    font-style: inherit;
+    /*border-bottom: 1px dashed black;*/
+}
+.linematch{
+    color: green;
+}
+.linefail{
+    color: red;
 }

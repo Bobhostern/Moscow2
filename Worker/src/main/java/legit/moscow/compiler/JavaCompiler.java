@@ -51,8 +51,11 @@ public class JavaCompiler implements Compiler, TaskExecutor {
         myDirectory.mkdirs();
     }
 
+    final static int MAX_OUTPUT_SIZE = 1000000;
+
     @Override
     public void buildAndRun(CompilationTask task) {
+        System.out.println("Starting task " + task.id);
 
         File workingDirectory = new File(myDirectory, String.valueOf(task.id));
         workingDirectory.mkdirs();
@@ -72,7 +75,7 @@ public class JavaCompiler implements Compiler, TaskExecutor {
                 .redirectErrorStream(true)
                 .redirectOutput(bOut)
                 .directory(workingDirectory);
-
+        System.out.println("Compiling");
         try {
             Process p = compile.start();
             p.waitFor(timeout, TimeUnit.SECONDS);
@@ -117,9 +120,9 @@ public class JavaCompiler implements Compiler, TaskExecutor {
         try {
             Process p = run.start();
             if (!p.waitFor(timeout, TimeUnit.SECONDS)) { //timeout
-                p.destroyForcibly();
                 timedOut = true;
             }
+            p.destroyForcibly();
         } catch (Exception e) {
             e.printStackTrace(); //pls don't interrupt this >:(
         }   //        </editor-fold>
@@ -131,10 +134,19 @@ public class JavaCompiler implements Compiler, TaskExecutor {
             e.printStackTrace();
         }
 
+        in.useDelimiter("");
         StringBuilder builder = new StringBuilder();
-        while (in.hasNextLine()) {
-            builder.append(in.nextLine()).append("\n");
+
+        int count = 0;
+        while (in.hasNext() && count++ < MAX_OUTPUT_SIZE) {
+            builder.append(in.next());
         }
+        if (in.hasNext()) {
+            builder.append("\n//input length exceeded ")
+                    .append(MAX_OUTPUT_SIZE)
+                    .append(" characters");
+        }
+
         if (timedOut) {
             builder.append("\n\n//Run time exceeded ")
                     .append(timeout)
@@ -142,7 +154,7 @@ public class JavaCompiler implements Compiler, TaskExecutor {
         }
 
         String runOutput = builder.toString();
-
+        System.out.println("build complete");
         CompilationEvent event = new CompilationEvent(task, compileOutput, runOutput);
         for (CompilationListener listener : listeners) {
             listener.compilationComplete(event);

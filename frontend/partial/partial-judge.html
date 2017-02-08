@@ -13,11 +13,20 @@
             <div id='output' ng-if='hasJudge()'>
                 <div class='halftitle'>Correct Output</div>
                 <div class='halftitle'>Competitor Output</div>
-                <div class='outputview'>
-                    <pre class='codesample' ng-bind-html='pinfo.getProblem(currentSubmission.problem.value()).judgeout.value() | trust'></pre>
-                </div>
-                <div class='outputview'>
-                    <pre class='codesample' ng-bind-html='currentSubmission.output.value() | trust'></pre>
+                <div id='outputcontainer'>
+                    <div class='outputview'>
+                        <!--<pre class='codesample' ng-bind-html='pinfo.getProblem(currentSubmission.problem.value()).judgeout.value() | trust'></pre>-->
+                        <div class='outputline' ng-repeat='line in judgeLines =splitLines(pinfo.getProblem(currentSubmission.problem.value()).judgeout.value()) track by $index'>
+                            <pre class='codesample' ng-bind-html='line | trust'></pre>
+                        </div>
+                    </div>
+                    <div class='outputview'>
+                        <!--<pre class='codesample' ng-bind-html='currentSubmission.output.value() | trust'></pre>-->
+                        <!--asdasd{{splitLines(currentSubmission.output.value())}}-->
+                        <div class='outputline' ng-repeat='line in splitLines(competitorLines = currentSubmission.output.value()) track by $index'>
+                            <pre class='codesample {{line==judgeLines[$index]?"linematch":"linefail"}}' ng-bind-html='line | trust'></pre>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="collapsible" data-collapsible="accordion">

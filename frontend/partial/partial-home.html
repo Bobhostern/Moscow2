@@ -1,5 +1,49 @@
 <p>
-    Welcome Home {{userinfo.alias.value()}}!<br>
-    Use the SideNav to the left to navigate through the website!<br>
-    Hint: Click the three horizontal lines at the top left to open the SideNav.
+    Welcome Home {{userinfo.alias.value()}}!<br> Use the SideNav to the left to navigate through the website!<br> Hint: Click
+    the three horizontal lines at the top left to open the SideNav.
+
+    <div ng-if='userinfo.type.value()==0'>
+        <h4 ng-if='userinfo.members.value().length == 0'>Please make sure to set the names of your team members (first and last!)</h4>
+        <h4>Team Members</h4>
+        <table>
+            <thead>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Written Score
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Member 1
+                        <input type='text' ng-model='userinfo.members.value()[0].name'>
+                    </td>
+                    <td>
+                        {{userinfo.members.value()[0].writtenscore}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Member 2
+                        <input type='text' ng-model='userinfo.members.value()[1].name'>
+                    </td>
+                    <td>
+                        {{userinfo.members.value()[1].writtenscore}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Member 3
+                        <input type='text' ng-model='userinfo.members.value()[2].name'>
+                    </td>
+                    <td>
+                        {{userinfo.members.value()[2].writtenscore}}
+                    </td>
+            </tbody>
+        </table>
+        <input type='submit' value='Update Members' class='btn waves-effect waves-light' ng-click='updateMembers()' ng-if='userinfo.hasMembers.value()'>
+        <!--<p>Note: Updating the members will delete written scores for your team (sorry!). If written scores have been put in already, please contact a contest administrator to update members.</p>-->
+    </div>
 </p>

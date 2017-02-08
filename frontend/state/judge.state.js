@@ -18,10 +18,10 @@ var judgecontroller = function ($scope, probleminfo, subinfo, userinfo) {
             return 'loading';
         }
     }
-    $scope.s = function(name){
+    $scope.s = function (name) {
         return subinfo.getSubmission(name);
     }
-    $scope.hasJudge = function(){
+    $scope.hasJudge = function () {
         return userinfo.type.value() > 0;
     }
     var subs = subinfo.subids.value();
@@ -40,6 +40,14 @@ var judgecontroller = function ($scope, probleminfo, subinfo, userinfo) {
                 });
             }
         }, 'value=' + encodeURIComponent(judgement));
+    }
+
+    $scope.splitLines = function (str) {
+        if (str == undefined) {
+            str = "";
+        }
+        var spl = str.split(/\r?\n/);
+        return spl;
     }
 }
 

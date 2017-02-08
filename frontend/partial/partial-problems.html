@@ -45,7 +45,10 @@
                         <th>Judgement</th>
                     </thead>
                     <tbody>
-
+                        <tr ng-repeat = 'sub in subinfo.subs' ng-if='sub.problem.value() == currentProblem.id'>
+                            <td>{{sub.id}}</td>
+                            <td class='submission-{{color(sub)}}'>{{color(sub).split("_").join(" ")}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

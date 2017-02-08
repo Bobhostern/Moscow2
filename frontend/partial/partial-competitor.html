@@ -1,0 +1,17 @@
+<link rel='stylesheet' href='/partial/partial-competitor.css'>
+<div id='competitors'>
+    <div id='clist' class='collection' style='height:100%'>
+        <a class='collection-item prettylist' ng-repeat='competitor in userinfo.competitors.value()' ng-click='$parent.comp=competitor'>
+        {{competitor.name}} - Team {{competitor.user_id}}
+    </a>
+    </div>
+    <div id='cdisplay'>
+        <h3 id='cname'>{{comp.name}}</h3>
+        <h4>Team {{comp.user_id}}</h4>
+        <p>Written Score:</p>
+        <input type='text' ng-model='comp.writtenscore'>
+
+        <input type='submit' value='Update Score' class='btn waves-effect waves-light' ng-click='updateScore(comp)'>
+        
+    </div>
+</div>

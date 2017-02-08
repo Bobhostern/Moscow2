@@ -14,6 +14,7 @@ module.exports = function (app) {
     var problems = require('./problems');
     var submission = require('./submission');
     var user = require('./user');
+    var competitors = require('./competitor');
 
     var worker = require('./worker');
 
@@ -24,5 +25,6 @@ module.exports = function (app) {
     app.use(REST + 'submission', submission);
     app.use(REST + 'user', user);
     app.use(REST + 'worker',worker);
+    app.use(REST + 'competitors', competitors);
 
 }

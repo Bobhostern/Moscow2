@@ -31,7 +31,7 @@ public class WorkConsumer extends DefaultConsumer {
 
         String message = new String(body);
 
-//        System.out.println("Received " + message);
+        System.out.println("Received " + message);
 
         TaskCommand command = gson.fromJson(message, TaskCommand.class);
 
